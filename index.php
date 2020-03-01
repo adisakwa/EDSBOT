@@ -40,16 +40,27 @@
     $replyText["text"] = "สวัสดีคับบบบ";
   } else {
 while ($row = $getUser->fetch(PDO::FETCH_ASSOC)) {
-    echo "<td>" . $row["name"] . "</td>";
-    echo "<td>" . htmlspecialchars($row["surname"]) . "</td>";
-	echo "<td>" . htmlspecialchars($row["customerid"]) . "</td>";
+      $Name = $row['name'];
+      $Surname = $row['surname'];
+      $CustomerID = $row['customerID'];
 	
 	
 }
 	
-	
+$replyText["text"] = "สวัสดีคุณ $Name $Surname (#$CustomerID)";	
 	
 }
+ $lineData['URL'] = "https://api.line.me/v2/bot/message/reply";
+  $lineData['AccessToken'] = "7CpagKQQPjselOrSh9YNG8aHKs0khbDpaNjVLiwav4Gv6gr2kophRKEPGYBDNd7Rhv/m0oI5O+MQ7gbzVM3MxBoUgNXSKw1BmxMraXYEaxD/ayIVVT8KFYSLUGEMqhOhH0mRMG0ToTov0J789ibCfwdB04t89/1O/w1cDnyilFU=";
 
+  $replyJson["replyToken"] = $replyToken;
+  $replyJson["messages"][0] = $replyText;
+
+  $encodeJson = json_encode($replyJson);
+
+  $results = sendMessage($encodeJson,$lineData);
+  echo $results;
+
+  http_response_code(200);
  
 ?>
