@@ -32,7 +32,7 @@
     $conn = new PDO($dsn);
     //$conn->query("INSERT INTO log (userid, text, timestamp "  );
 	
-  $getUser = $conn->query("SELECT * FROM customer WHERE userid = '$userID'");
+  $getUser = $conn->query("SELECT * FROM customer ");
   $getuserNum = $getUser->num_rows;
   
   $replyText["type"] = "text";
