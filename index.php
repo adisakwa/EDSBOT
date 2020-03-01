@@ -22,7 +22,7 @@ $dsn = "pgsql:"
  
 
 
-   $mysql->query("INSERT INTO `log`(`userid`, `text`, `timestamp`) VALUES ('$userID','$text','$timestamp')");
+ $mysql->query("INSERT INTO `log`(`userid`, `text`, `timestamp`) VALUES ('$userID','$text','$timestamp')");
 
   $getUser = $mysql->query("SELECT * FROM `customer` WHERE `userid`='$userID'");
  
@@ -32,14 +32,14 @@ $dsn = "pgsql:"
   if ($getuserNum == "0"){
     $replyText["text"] = "สวัสดีคับบบบ";
   } else {
-	  
+	if(is_array($$getUser)){  
   foreach ($mysql->query($getUser) as $row){
       $Name = $row['name'];
       $Surname = $row['surname'];
       $CustomerID = $row['customerid'];   
 }
 
-   
+	}
     $replyText["text"] = "สวัสดีคุณ $Name $Surname (#$CustomerID)";
   }
 
