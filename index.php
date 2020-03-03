@@ -32,9 +32,9 @@
     $conn = new PDO($dsn);
     //$conn->query("INSERT INTO log (userid, text, timestamp "  );
 	
-  $getUser = $conn->query("SELECT * FROM Customer WHERE UserID = '$text' ");
- 
-  $getuserNum = $getUser->num_rows;
+  $getUser = $conn->query("SELECT * FROM Customer WHERE upper(UserID) = upper('$text') ");//upper ใช้ค้นหาได้ทั้งตัวเล็กและตัวใหญ่
+  
+  $getuserNum = $getUser->rowCount();
   
   $replyText["type"] = "text";
   if ($getuserNum == "0"){
