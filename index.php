@@ -4,7 +4,7 @@
 
   $replyToken = $jsonData["events"][0]["replyToken"];
   $userID = $jsonData["events"][0]["source"]["userId"];
-  //$userID = "Ucd8fefa3e6c4116ec020ae2abb751a";
+  
   $text = $jsonData["events"][0]["message"]["text"];
   $timestamp = $jsonData["events"][0]["timestamp"];
   function sendMessage($replyJson, $sendInfo){
@@ -32,22 +32,24 @@
     $conn = new PDO($dsn);
     //$conn->query("INSERT INTO log (userid, text, timestamp "  );
 	
-  $getUser = $conn->query("SELECT * FROM customer ");
+  $getUser = $conn->query("SELECT * FROM Customer WHERE UserID = '$text' ");
+ 
   $getuserNum = $getUser->num_rows;
   
   $replyText["type"] = "text";
   if ($getuserNum == "0"){
-    $replyText["text"] = "สวัสดีคับบบบ";
+    $replyText["text"] = "site code นี้ไม่มี link EDS";
   } else {
 while ($row = $getUser->fetch(PDO::FETCH_ASSOC)) {
       $Name = $row['name'];
       $Surname = $row['surname'];
-      $CustomerID = $row['customerID'];
+      $CustomerID = $row['userid'];
+	 
 	
 	
 }
 	
-$replyText["text"] = "สวัสดีคุณ $Name $Surname (#$CustomerID)";	
+$replyText["text"] = "Site $CustomerID มี link EDS  $Name  $Surname ";	
 	
 }
  $lineData['URL'] = "https://api.line.me/v2/bot/message/reply";
@@ -60,7 +62,9 @@ $replyText["text"] = "สวัสดีคุณ $Name $Surname (#$CustomerID)"
 
   $results = sendMessage($encodeJson,$lineData);
   echo $results;
-
+ 
   http_response_code(200);
  
 ?>
+
+
