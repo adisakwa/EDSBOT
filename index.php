@@ -44,12 +44,13 @@ while ($row = $getUser->fetch(PDO::FETCH_ASSOC)) {
       $Name = $row['name'];
       $Surname = $row['surname'];
       $CustomerID = $row['userid'];
+	  $link = $row['customerid'];
 	 
 	
 	
 }
 	
-$replyText["text"] = "Site $CustomerID มี link EDS  $Name  $Surname ";	
+$replyText["text"] = "Site $CustomerID มี link EDS  $Name  $Surname $link";	
 	
 }
  $lineData['URL'] = "https://api.line.me/v2/bot/message/reply";
