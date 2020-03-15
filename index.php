@@ -25,19 +25,28 @@
     $getuserNum = $getUser->rowCount();
    
 
-   
-     if($getuserNum == "0"){$replyText["text"] = "site code นี้ไม่มี link EDS";}else
-       {while ($row = $getUser->fetch(PDO::FETCH_ASSOC)){
-		   $Name = $row['name'];
-           $Surname = $row['surname'];
-           $CustomerID = $row['userid'];
-	       $link = $row['customerid'];
-          $arrayPostData['to'] = $id;
-          $arrayPostData['messages'][0]['type'] = "text";
-          $arrayPostData['messages'][0]['text'] = $Name.$CustomerID.$link;
-          pushMsg($arrayHeader,$arrayPostData);
-       }
-	   }
+    
+     if($getuserNum == "0"){
+		 $arrayPostData['to'] = $id;
+		 $arrayPostData['messages'][0]['type'] = "text";
+		  $arrayPostData['messages'][0]['text'] = "site $message ไม่มี link EDS";
+		   pushMsg($arrayHeader,$arrayPostData);
+		} else {while ( $row = $getUser->fetch(PDO::FETCH_ASSOC)){
+		      $Name = $row['name'];
+              $Surname = $row['surname'];
+              $CustomerID = $row['userid'];
+	          $link = $row['customerid'];
+			  
+              $arrayPostData['to'] = $id;
+              $arrayPostData['messages'][0]['type'] = "text";
+              $arrayPostData['messages'][0]['text'] = "Site $CustomerID มี link EDS   $Name  $Surname $link  ";
+			  
+              pushMsg($arrayHeader,$arrayPostData);
+			  $arrayPostData['messages'][1]['type'] = "text";
+              $arrayPostData['messages'][1]['text'] = "Site $CustomerID มี link EDS  $getuserNum link  ";
+			   sendMessage($arrayHeader,$arrayPostData);
+			  }
+}
  
    function pushMsg($arrayHeader,$arrayPostData){
       $strUrl = "https://api.line.me/v2/bot/message/push";
@@ -52,5 +61,20 @@
       $result = curl_exec($ch);
       curl_close ($ch);
    }
+    function sendMessage($arrayHeader,$arrayPostData){
+          $strUrl = "https://api.line.me/v2/bot/message/reply";
+      $ch = curl_init();
+      curl_setopt($ch, CURLOPT_URL,$strUrl);
+      curl_setopt($ch, CURLOPT_HEADER, false);
+      curl_setopt($ch, CURLOPT_POST, true);
+      curl_setopt($ch, CURLOPT_HTTPHEADER, $arrayHeader);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($arrayPostData));
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+      $result = curl_exec($ch);
+      curl_close ($ch);
+  }
+
+	
    exit;
 ?>
