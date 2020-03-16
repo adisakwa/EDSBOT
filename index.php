@@ -20,9 +20,9 @@
    $message = $arrayJson['events'][0]['message']['text'];
    //รับ id ของผู้ใช้
    $id = $arrayJson['events'][0]['source']['userId'];
-   $getUser = $conn->query("SELECT * FROM Customer WHERE  upper(UserID) = upper('$message') ");//upper ใช้ค้นหาได้ทั้งตัวเล็กและตัวใหญ่
+   $getLink = $conn->query("SELECT * FROM Customer WHERE  upper(userid) = upper('$message') or  upper(name) = upper('$message')");//upper ใช้ค้นหาได้ทั้งตัวเล็กและตัวใหญ่
   
-    $getuserNum = $getUser->rowCount();
+    $getuserNum = $getLink->rowCount();
    
 
     
@@ -31,7 +31,7 @@
 		 $arrayPostData['messages'][0]['type'] = "text";
 		  $arrayPostData['messages'][0]['text'] = "site $message ไม่มี link EDS";
 		   pushMsg($arrayHeader,$arrayPostData);
-		} else {while ( $row = $getUser->fetch(PDO::FETCH_ASSOC)){
+		} else {while ( $row = $getLink->fetch(PDO::FETCH_ASSOC)){
 		      $Name = $row['name'];
               $Surname = $row['surname'];
               $CustomerID = $row['userid'];
