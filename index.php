@@ -1,8 +1,5 @@
-
-Skip to content
-Pull requests
-
 <?php
+
    $accessToken ="7CpagKQQPjselOrSh9YNG8aHKs0khbDpaNjVLiwav4Gv6gr2kophRKEPGYBDNd7Rhv/m0oI5O+MQ7gbzVM3MxBoUgNXSKw1BmxMraXYEaxD/ayIVVT8KFYSLUGEMqhOhH0mRMG0ToTov0J789ibCfwdB04t89/1O/w1cDnyilFU=";//copy ข้อความ Channel access token ตอนที่ตั้งค่า
    $content = file_get_contents('php://input');
    $content = file_get_contents('php://input');
@@ -27,27 +24,27 @@ Pull requests
    $getLink = $conn->query("SELECT * FROM Customer WHERE  upper(userid) = upper('$message') or  upper(customerid) = upper('$message')");//upper ใช้ค้นหาได้ทั้งตัวเล็กและตัวใหญ่
   
     $getuserNum = $getLink->rowCount();
-   
-
-    
+ 
      if($getuserNum == "0"){
 		 $arrayPostData['to'] = $id;
 		 $arrayPostData['messages'][0]['type'] = "text";
 		  $arrayPostData['messages'][0]['text'] = "site $message ไม่มี link EDS";
 		   pushMsg($arrayHeader,$arrayPostData);
-		} else {while ( $row = $getLink->fetch(PDO::FETCH_ASSOC)){
+		} else  $i =1 ;{while  ( $row = $getLink->fetch(PDO::FETCH_ASSOC)){ 
 		      $Name = $row['name'];
               $Surname = $row['surname'];
               $CustomerID = $row['userid'];
 	          $link = $row['customerid'];
-			  
+			  $reply['replyToken'] = $arrayJson['events'][0]['replyToken'];
+			  $reply['messages'][0]['type'] = "text";
+			  $reply['messages'][0]['text'] = "Site $CustomerID มี link EDS  $getuserNum link ";
+				   replyMsg($arrayHeader,$reply);
               $arrayPostData['to'] = $id;
               $arrayPostData['messages'][0]['type'] = "text";
-              $arrayPostData['messages'][0]['text'] = "Site $CustomerID มี link EDS   $Name  $Surname $link  ";
-			  
-              pushMsg($arrayHeader,$arrayPostData);
-		
-			  }
+              $arrayPostData['messages'][0]['text'] = "Site $CustomerID  link  $i   $Name  $Surname $link  ";
+			   $i++;
+			       pushMsg($arrayHeader,$arrayPostData); }
+			 
 }
  
    function pushMsg($arrayHeader,$arrayPostData){
@@ -63,22 +60,24 @@ Pull requests
       $result = curl_exec($ch);
       curl_close ($ch);
    }
-    function sendMessage($arrayHeader,$arrayPostData){
-          $strUrl = "https://api.line.me/v2/bot/message/reply";
+
+
+  function replyMsg($arrayHeader,$reply){
+      $strUrl = "https://api.line.me/v2/bot/message/reply";
       $ch = curl_init();
       curl_setopt($ch, CURLOPT_URL,$strUrl);
       curl_setopt($ch, CURLOPT_HEADER, false);
       curl_setopt($ch, CURLOPT_POST, true);
       curl_setopt($ch, CURLOPT_HTTPHEADER, $arrayHeader);
-      curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($arrayPostData));
+      curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($reply));
       curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
       curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
       $result = curl_exec($ch);
       curl_close ($ch);
-  }
+   }
 
+
+	
 	
    exit;
 ?>
-
-   
