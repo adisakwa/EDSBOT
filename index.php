@@ -24,7 +24,7 @@ Pull requests
    $message = $arrayJson['events'][0]['message']['text'];
    //รับ id ของผู้ใช้
    $id = $arrayJson['events'][0]['source']['userId'];
-   $getLink = $conn->query("SELECT * FROM Customer WHERE  upper(userid) = upper('$message') or  upper(name) = upper('$message')");//upper ใช้ค้นหาได้ทั้งตัวเล็กและตัวใหญ่
+   $getLink = $conn->query("SELECT * FROM Customer WHERE  upper(userid) = upper('$message') or  upper(customerid) = upper('$message')");//upper ใช้ค้นหาได้ทั้งตัวเล็กและตัวใหญ่
   
     $getuserNum = $getLink->rowCount();
    
