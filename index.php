@@ -1,3 +1,7 @@
+
+Skip to content
+Pull requests
+
 <?php
    $accessToken ="7CpagKQQPjselOrSh9YNG8aHKs0khbDpaNjVLiwav4Gv6gr2kophRKEPGYBDNd7Rhv/m0oI5O+MQ7gbzVM3MxBoUgNXSKw1BmxMraXYEaxD/ayIVVT8KFYSLUGEMqhOhH0mRMG0ToTov0J789ibCfwdB04t89/1O/w1cDnyilFU=";//copy ข้อความ Channel access token ตอนที่ตั้งค่า
    $content = file_get_contents('php://input');
@@ -42,9 +46,7 @@
               $arrayPostData['messages'][0]['text'] = "Site $CustomerID มี link EDS   $Name  $Surname $link  ";
 			  
               pushMsg($arrayHeader,$arrayPostData);
-			  $arrayPostData['messages'][1]['type'] = "text";
-              $arrayPostData['messages'][1]['text'] = "Site $CustomerID มี link EDS  $getuserNum link  ";
-			   sendMessage($arrayHeader,$arrayPostData);
+		
 			  }
 }
  
@@ -78,3 +80,5 @@
 	
    exit;
 ?>
+
+   
