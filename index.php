@@ -7,7 +7,7 @@
    $arrayHeader = array();
    $arrayHeader[] = "Content-Type: application/json";
    $arrayHeader[] = "Authorization: Bearer {$accessToken}";
-   
+   echo $content;
     $dsn = "pgsql:"
     . "host=ec2-52-200-119-0.compute-1.amazonaws.com;"
     . "dbname=d5tcp5utb7os37;"
@@ -21,7 +21,7 @@
    $message = $arrayJson['events'][0]['message']['text'];
    //รับ id ของผู้ใช้
    $id = $arrayJson['events'][0]['source']['userId'];
-   $getLink = $conn->query("SELECT * FROM Customer WHERE  upper(userid) = upper('$message') or  upper(customerid) = upper('$message')");//upper ใช้ค้นหาได้ทั้งตัวเล็กและตัวใหญ่
+   $getLink = $conn->query("SELECT * FROM Customer WHERE  upper(userid) = upper('$message') or  upper(customerid) = upper('$message') or upper(chain) = upper('$message') ");//upper ใช้ค้นหาได้ทั้งตัวเล็กและตัวใหญ่
   
     $getuserNum = $getLink->rowCount();
  
@@ -37,11 +37,11 @@
 	          $link = $row['customerid'];
 			  $reply['replyToken'] = $arrayJson['events'][0]['replyToken'];
 			  $reply['messages'][0]['type'] = "text";
-			  $reply['messages'][0]['text'] = "Site $CustomerID มี link EDS  $getuserNum link ";
+			  $reply['messages'][0]['text'] = "คุณค้นหาด้วย $message มี link EDS  $getuserNum link ";
 				   replyMsg($arrayHeader,$reply);
               $arrayPostData['to'] = $id;
               $arrayPostData['messages'][0]['type'] = "text";
-              $arrayPostData['messages'][0]['text'] = "Site $CustomerID  link  $i   $Name  $Surname $link  ";
+              $arrayPostData['messages'][0]['text'] = "site $CustomerID  link  ที่ $i   $Name Lat,Long $Surname  non $link  ";
 			   $i++;
 			       pushMsg($arrayHeader,$arrayPostData); }
 			 
@@ -76,7 +76,7 @@
       curl_close ($ch);
    }
 
-
+echo 
 	
 	
    exit;
