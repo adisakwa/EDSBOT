@@ -1,6 +1,6 @@
 <?php
 
-   $accessToken ="7CpagKQQPjselOrSh9YNG8aHKs0khbDpaNjVLiwav4Gv6gr2kophRKEPGYBDNd7Rhv/m0oI5O+MQ7gbzVM3MxBoUgNXSKw1BmxMraXYEaxD/ayIVVT8KFYSLUGEMqhOhH0mRMG0ToTov0J789ibCfwdB04t89/1O/w1cDnyilFU=";//copy ข้อความ Channel access token ตอนที่ตั้งค่า
+   $accessToken ="mP+qB9oSHV7pv1PouggvmGd4bKnzHnS4FzNl7VVlS3mwRjScssG/RM7aYUjAYBWYwi8UJ9h92aRsb3t6p5OVI34u+TJwx8BCdVk6e+RieijZg0VU+JKbKwFGFSuQRo8d2zj3NFYm+ocd3eUv5hRAHAdB04t89/1O/w1cDnyilFU=";//copy ข้อความ Channel access token ตอนที่ตั้งค่า
    $content = file_get_contents('php://input');
    $content = file_get_contents('php://input');
    $arrayJson = json_decode($content, true);
@@ -30,7 +30,7 @@
 		 $arrayPostData['messages'][0]['type'] = "text";
 		  $arrayPostData['messages'][0]['text'] = "site $message ไม่มี link EDS";
 		   pushMsg($arrayHeader,$arrayPostData);
-		} else  $i =1 ;{while  ( $row = $getLink->fetch(PDO::FETCH_ASSOC)){ 
+		} else  $i =1 ; {while  ( $row = $getLink->fetch(PDO::FETCH_ASSOC)){ 
 		      $Name = $row['name'];
               $Surname = $row['surname'];
               $CustomerID = $row['userid'];
@@ -42,7 +42,7 @@
               $arrayPostData['to'] = $id;
               $arrayPostData['messages'][0]['type'] = "text";
               $arrayPostData['messages'][0]['text'] = "site $CustomerID  link  ที่ $i   $Name Lat,Long $Surname  non $link  ";
-			   $i++;
+			   $i++ ;
 			       pushMsg($arrayHeader,$arrayPostData); }
 			 
 }
