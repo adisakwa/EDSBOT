@@ -21,11 +21,28 @@
    $message = $arrayJson['events'][0]['message']['text'];
    //รับ id ของผู้ใช้
    $id = $arrayJson['events'][0]['source']['userId'];
-   $getLink = $conn->query("SELECT * FROM customer WHERE  upper(userid) = upper('$message') or  upper(customerid) = upper('$message') or upper(chain) = upper('$message') ");//upper ใช้ค้นหาได้ทั้งตัวเล็กและตัวใหญ่
+   $getLink = $conn->query("SELECT * FROM customer WHERE  upper(userid) = upper('$message') or  upper(customerid) = upper('$message') or upper(surname) = upper('$message') ");//upper ใช้ค้นหาได้ทั้งตัวเล็กและตัวใหญ่
   
     $getuserNum = $getLink->rowCount();
- 
-     if($getuserNum == "0"){
+    $non = "5555555555"   ;
+	if (strlen($message ) ==  strlen ( $non )& $getuserNum > "0" ){
+		
+		while  ( $row = $getLink->fetch(PDO::FETCH_ASSOC)){ 
+		      $Name = $row['name'];
+              $Surname = $row['surname'];
+              $CustomerID = $row['userid'];
+	          $link = $row['customerid'];
+			  $Lat = $row['chain'];
+			  $Long = $row['nickname'];
+		
+        $arrayPostData['replyToken'] = $arrayJson['events'][0]['replyToken'];
+        $arrayPostData['messages'][0]['type'] = "location";
+        $arrayPostData['messages'][0]['title'] ="$Name";
+        $arrayPostData['messages'][0]['address'] ="$Lat,$Long";
+        $arrayPostData['messages'][0]['latitude'] ="$Lat";
+        $arrayPostData['messages'][0]['longitude'] ="$Long";
+        replyMsg($arrayHeader,$arrayPostData);}
+		} else{ if($getuserNum == "0"){
 		 $arrayPostData['to'] = $id;
 		 $arrayPostData['messages'][0]['type'] = "text";
 		  $arrayPostData['messages'][0]['text'] = "site $message ไม่มี link EDS";
@@ -35,18 +52,23 @@
               $Surname = $row['surname'];
               $CustomerID = $row['userid'];
 	          $link = $row['customerid'];
+			  $Lat = $row['chain'];
+			  $Long = $row['nickname'];
 			  $reply['replyToken'] = $arrayJson['events'][0]['replyToken'];
 			  $reply['messages'][0]['type'] = "text";
-			  $reply['messages'][0]['text'] = "คุณค้นหาด้วย $message มี link EDS  $getuserNum link ";
+			  $reply['messages'][0]['text'] = " $message มี link EDS  $getuserNum link ";
 				   replyMsg($arrayHeader,$reply);
               $arrayPostData['to'] = $id;
               $arrayPostData['messages'][0]['type'] = "text";
-              $arrayPostData['messages'][0]['text'] = "site $CustomerID  link  ที่ $i   $Name Lat,Long $Surname  non $link  ";
+              $arrayPostData['messages'][0]['text'] = " site $CustomerID  \n link  ที่ $i non $link \n $Name  \n Lat,Long $Lat,$Long  ";
+			  
 			   $i++ ;
 			       pushMsg($arrayHeader,$arrayPostData); }
-			 
-}
+				   }
+ }
+	
  
+
    function pushMsg($arrayHeader,$arrayPostData){
       $strUrl = "https://api.line.me/v2/bot/message/push";
       $ch = curl_init();
